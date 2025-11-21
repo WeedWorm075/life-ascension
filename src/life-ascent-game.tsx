@@ -43,6 +43,7 @@ const LifeAscent = () => {
   const [progressExamModal, setProgressExamModal] = useState(null);
   const [miniGameModal, setMiniGameModal] = useState(null);
   const [miniGameState, setMiniGameState] = useState(null);
+  const [shopModal, setShopModal] = useState(false);
 
   useEffect(() => {
     if (gameState.day > 1) {
@@ -1175,6 +1176,118 @@ const LifeAscent = () => {
     }
   };
 
+  const shopItems = [
+    {
+      id: 'energy_drink',
+      name: '☕ Boisson Énergisante',
+      description: 'Boost instantané d\'énergie',
+      cost: 50,
+      effects: { energy: 30 },
+      consequences: { health: -5 },
+      icon: '☕'
+    },
+    {
+      id: 'junk_food',
+      name: '🍔 Fast Food',
+      description: 'Rapide et satisfaisant',
+      cost: 30,
+      effects: { energy: 20 },
+      consequences: { health: -10 },
+      icon: '🍔'
+    },
+    {
+      id: 'gym_membership',
+      name: '🏋️ Abonnement Gym',
+      description: 'Améliore la santé',
+      cost: 200,
+      effects: { health: 40, energy: -20 },
+      consequences: { time: 2 },
+      icon: '🏋️'
+    },
+    {
+      id: 'online_course',
+      name: '📚 Cours en Ligne',
+      description: 'Développe les compétences',
+      cost: 300,
+      effects: { skills: 60, career: 30 },
+      consequences: { energy: -30, time: 3 },
+      icon: '📚'
+    },
+    {
+      id: 'party_night',
+      name: '🎉 Soirée Festive',
+      description: 'Boost le social',
+      cost: 150,
+      effects: { social: 50, mental: 20 },
+      consequences: { energy: -40, money: -50 },
+      icon: '🎉'
+    },
+    {
+      id: 'massage',
+      name: '💆 Massage Relaxant',
+      description: 'Réduit le stress',
+      cost: 120,
+      effects: { mental: 50, health: 20 },
+      consequences: { time: 2 },
+      icon: '💆'
+    },
+    {
+      id: 'video_games',
+      name: '🎮 Session Gaming',
+      description: 'Divertissement',
+      cost: 60,
+      effects: { mental: 30 },
+      consequences: { time: 3, career: -10 },
+      icon: '🎮'
+    },
+    {
+      id: 'luxury_item',
+      name: '💎 Article de Luxe',
+      description: 'Boost de confiance',
+      cost: 500,
+      effects: { mental: 40, social: 30 },
+      consequences: { finance: -20 },
+      icon: '💎'
+    },
+    {
+      id: 'tutoring',
+      name: '👨‍🏫 Tutorat Privé',
+      description: 'Aide aux études',
+      cost: 250,
+      effects: { study: 80 },
+      consequences: { time: 3, energy: -25 },
+      icon: '👨‍🏫',
+      requiresUniversity: true
+    },
+    {
+      id: 'networking_event',
+      name: '🤝 Événement Networking',
+      description: 'Développe le réseau',
+      cost: 180,
+      effects: { social: 40, career: 35 },
+      consequences: { energy: -30, time: 3 },
+      icon: '🤝'
+    },
+    {
+      id: 'stocks',
+      name: '📈 Actions Risquées',
+      description: 'Investissement à risque',
+      cost: 400,
+      effects: { finance: 70 },
+      consequences: { mental: -20 },
+      icon: '📈'
+    },
+    {
+      id: 'coffee_addiction',
+      name: '☕ Café Premium',
+      description: 'Productivité maximale',
+      cost: 80,
+      effects: { energy: 25, career: 20 },
+      consequences: { health: -15, mental: -10 },
+      icon: '☕'
+    }
+  ];
+
   const endMiniGame = (won) => {
     if (won) {
       const bonuses = {
@@ -1384,6 +1497,86 @@ const LifeAscent = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
+      {/* Shop Modal */}
+      {shopModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="max-w-4xl w-full bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-xl rounded-3xl p-8 border-2 border-yellow-500/50 my-8">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-3xl font-bold text-white flex items-center gap-3">
+                🛒 Boutique
+              </h3>
+              <button
+                onClick={() => setShopModal(false)}
+                className="text-slate-400 hover:text-white text-2xl"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="mb-4 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-xl">
+              <p className="text-yellow-400 text-sm text-center">
+                ⚠️ Chaque achat a des effets positifs et des conséquences!
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto pr-2">
+              {shopItems.filter(item => !item.requiresUniversity || gameState.university).map(item => (
+                <div key={item.id} className="bg-gradient-to-br from-slate-700/50 to-slate-800/50 rounded-2xl p-4 border border-slate-600/50 hover:border-yellow-500/50 transition-all">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <h4 className="text-lg font-bold text-white mb-1">{item.name}</h4>
+                      <p className="text-sm text-slate-400">{item.description}</p>
+                    </div>
+                    <span className="text-2xl">{item.icon}</span>
+                  </div>
+
+                  <div className="space-y-2 mb-3">
+                    <div className="text-xs">
+                      <span className="text-green-400 font-semibold">✓ Effets:</span>
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {Object.entries(item.effects).map(([key, val]) => (
+                          <span key={key} className="bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full">
+                            {key === 'energy' ? `+${val} énergie` : 
+                             key === 'study' ? `+${val} étude` :
+                             `+${val} ${key}`}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="text-xs">
+                      <span className="text-red-400 font-semibold">✗ Conséquences:</span>
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {Object.entries(item.consequences).map(([key, val]) => (
+                          <span key={key} className="bg-red-500/20 text-red-300 px-2 py-0.5 rounded-full">
+                            {key === 'time' ? `${val}h` :
+                             key === 'energy' ? `${val} énergie` :
+                             key === 'money' ? `${val}€` :
+                             `${val} ${key}`}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => purchaseItem(item)}
+                    disabled={gameState.money < item.cost}
+                    className={`w-full py-2 rounded-xl font-semibold transition-all ${
+                      gameState.money < item.cost
+                        ? 'bg-slate-700 text-slate-500 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white'
+                    }`}
+                  >
+                    Acheter - {item.cost}€
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Mini-Game Modals */}
       {miniGameModal === 'memory' && miniGameState && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -1817,6 +2010,16 @@ const LifeAscent = () => {
                   <span className="text-white font-semibold">{gameState.money}€</span>
                 </div>
               </div>
+              
+              <button
+                onClick={() => setShopModal(true)}
+                className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 px-4 py-2 rounded-xl border border-yellow-500/50 hover:border-yellow-400 transition-all"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">🛒</span>
+                  <span className="text-white font-semibold">Boutique</span>
+                </div>
+              </button>
             </div>
           </div>
 
