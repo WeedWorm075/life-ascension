@@ -819,7 +819,7 @@ const LifeAscent = () => {
   if (screen === 'intro') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-        <div className="max-w-md w-full">
+        <div className="w-full">
           <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-3xl p-8 border border-slate-700/50 shadow-2xl">
             <div className="text-center mb-8">
               <div className="inline-block p-4 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-2xl mb-4">
@@ -862,7 +862,7 @@ const LifeAscent = () => {
       {/* Exam Modal */}
       {examModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="max-w-2xl w-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 backdrop-blur-xl rounded-3xl p-8 border-2 border-indigo-500/50 shadow-2xl">
+          <div className="w-full w-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 backdrop-blur-xl rounded-3xl p-8 border-2 border-indigo-500/50 shadow-2xl">
             <div className="text-center mb-6">
               <div className="inline-block p-4 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl mb-4">
                 <Award className="w-12 h-12 text-white" />
@@ -902,7 +902,7 @@ const LifeAscent = () => {
       {/* Career Event Modal */}
       {careerEvent && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className={`max-w-md w-full bg-gradient-to-br ${
+          <div className={`w-full w-full bg-gradient-to-br ${
             careerEvent.type === 'promotion' 
               ? 'from-yellow-500/20 to-orange-500/20 border-yellow-500/50' 
               : careerEvent.effects?.money && careerEvent.effects.money > 0
@@ -996,7 +996,7 @@ const LifeAscent = () => {
       {/* Event Modal */}
       {event && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className={`max-w-md w-full bg-gradient-to-br ${
+          <div className={`w-full w-full bg-gradient-to-br ${
             event.type === 'good' 
               ? 'from-emerald-500/20 to-cyan-500/20 border-emerald-500/50' 
               : 'from-red-500/20 to-orange-500/20 border-red-500/50'
@@ -1077,7 +1077,7 @@ const LifeAscent = () => {
       )}
 
       {/* Header */}
-      <div className="max-w-7xl mx-auto mb-6">
+      <div className="w-full mx-auto mb-6">
         <div className="bg-gradient-to-r from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50 shadow-xl">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
@@ -1126,7 +1126,7 @@ const LifeAscent = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-6">
+      <div className="w-full mx-auto grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Left Panel - Stats & Quests (40%) */}
         <div className="lg:col-span-2 space-y-6">
           {/* Stats Panel */}
