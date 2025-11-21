@@ -40,11 +40,16 @@ const LifeAscent = () => {
   const [examModal, setExamModal] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [examAnswers, setExamAnswers] = useState([]);
+  const [progressExamModal, setProgressExamModal] = useState(null);
+  const [miniGameModal, setMiniGameModal] = useState(null);
+  const [miniGameState, setMiniGameState] = useState(null);
 
   useEffect(() => {
     if (gameState.day > 1) {
       generateDailyQuests();
       checkCareerProgression();
+      // Reset exam failed flag each new day
+      setGameState(prev => ({ ...prev, examFailedToday: false, canStudy: true }));
     }
   }, [gameState.day]);
 
@@ -243,6 +248,41 @@ const LifeAscent = () => {
           options: ['HTTP', 'FTP', 'HTTPS', 'SMTP'],
           correct: 2
         }
+      ],
+      progressExams: [
+        {
+          threshold: 250,
+          name: 'Examen Mi-Parcours',
+          questions: [
+            { q: 'Qu\'est-ce que le Git?', options: ['Un langage', 'Un système de contrôle de version', 'Un IDE', 'Un framework'], correct: 1 },
+            { q: 'Que signifie CSS?', options: ['Computer Style Sheets', 'Cascading Style Sheets', 'Creative Style System', 'Code Style Sheets'], correct: 1 },
+            { q: 'Qu\'est-ce qu\'un algorithme?', options: ['Un bug', 'Une séquence d\'instructions', 'Un langage', 'Un serveur'], correct: 1 },
+            { q: 'Que fait la méthode push()?', options: ['Supprime', 'Ajoute à la fin', 'Trie', 'Recherche'], correct: 1 },
+            { q: 'SQL est utilisé pour?', options: ['Styliser', 'Gérer des bases de données', 'Programmer', 'Débugger'], correct: 1 }
+          ]
+        },
+        {
+          threshold: 500,
+          name: 'Examen Intermédiaire',
+          questions: [
+            { q: 'Qu\'est-ce que le polymorphisme?', options: ['Un bug', 'Un concept POO', 'Un langage', 'Un serveur'], correct: 1 },
+            { q: 'REST API utilise quel protocole?', options: ['FTP', 'HTTP', 'SMTP', 'SSH'], correct: 1 },
+            { q: 'Que fait async/await?', options: ['Accélère le code', 'Gère l\'asynchrone', 'Compile', 'Débugge'], correct: 1 },
+            { q: 'Qu\'est-ce qu\'un framework?', options: ['Un bug', 'Une structure de développement', 'Un langage', 'Un OS'], correct: 1 },
+            { q: 'MVC signifie?', options: ['Model View Controller', 'Main Visual Code', 'Modern View Concept', 'Multiple View Control'], correct: 0 }
+          ]
+        },
+        {
+          threshold: 750,
+          name: 'Examen Pré-Final',
+          questions: [
+            { q: 'Qu\'est-ce que Docker?', options: ['Un langage', 'Une plateforme de conteneurisation', 'Un IDE', 'Un framework'], correct: 1 },
+            { q: 'Design pattern Singleton fait quoi?', options: ['Plusieurs instances', 'Une seule instance', 'Aucune instance', 'Instances infinies'], correct: 1 },
+            { q: 'CI/CD signifie?', options: ['Code Integration/Deployment', 'Continuous Integration/Deployment', 'Computer Install/Debug', 'Create Import/Delete'], correct: 1 },
+            { q: 'Qu\'est-ce que Redux?', options: ['Un langage', 'Un gestionnaire d\'état', 'Un serveur', 'Un framework CSS'], correct: 1 },
+            { q: 'WebSocket permet?', options: ['Communication unidirectionnelle', 'Communication bidirectionnelle en temps réel', 'Stockage', 'Compilation'], correct: 1 }
+          ]
+        }
       ]
     },
     business: {
@@ -277,6 +317,41 @@ const LifeAscent = () => {
           options: ['Liquidité', 'Rentabilité', 'Solvabilité', 'Productivité'],
           correct: 1
         }
+      ],
+      progressExams: [
+        {
+          threshold: 250,
+          name: 'Examen Mi-Parcours',
+          questions: [
+            { q: 'Qu\'est-ce que le SWOT?', options: ['Un ratio', 'Une analyse Forces/Faiblesses', 'Un produit', 'Un marché'], correct: 1 },
+            { q: 'KPI signifie?', options: ['Key Performance Indicator', 'Keep Product Innovative', 'Know Price Index', 'Key Product Information'], correct: 0 },
+            { q: 'B2B signifie?', options: ['Business to Business', 'Brand to Brand', 'Buy to Buy', 'Back to Back'], correct: 0 },
+            { q: 'Qu\'est-ce que le benchmarking?', options: ['Vendre', 'Comparer avec concurrents', 'Produire', 'Investir'], correct: 1 },
+            { q: 'Le cash flow c\'est?', options: ['Le stock', 'Le flux de trésorerie', 'Le profit', 'La dette'], correct: 1 }
+          ]
+        },
+        {
+          threshold: 500,
+          name: 'Examen Intermédiaire',
+          questions: [
+            { q: 'Blue Ocean Strategy?', options: ['Océan bleu = nouveaux marchés', 'Stratégie maritime', 'Écologie', 'Export'], correct: 0 },
+            { q: 'Qu\'est-ce que le churn rate?', options: ['Taux de profit', 'Taux d\'attrition clients', 'Taux de croissance', 'Taux d\'intérêt'], correct: 1 },
+            { q: 'MVP signifie?', options: ['Most Valuable Player', 'Minimum Viable Product', 'Maximum Value Proposition', 'Market Value Price'], correct: 1 },
+            { q: 'Lean Startup c\'est?', options: ['Startup pauvre', 'Méthodologie de développement agile', 'Type de financement', 'Secteur d\'activité'], correct: 1 },
+            { q: 'CAC signifie?', options: ['Customer Acquisition Cost', 'Company Annual Cost', 'Client Account Code', 'Corporate Asset Capital'], correct: 0 }
+          ]
+        },
+        {
+          threshold: 750,
+          name: 'Examen Pré-Final',
+          questions: [
+            { q: 'Qu\'est-ce que le LBO?', options: ['Un prêt', 'Leveraged Buy-Out', 'Un bonus', 'Un indicateur'], correct: 1 },
+            { q: 'Due diligence c\'est?', options: ['Audit approfondi', 'Diligence des employés', 'Processus de vente', 'Formation'], correct: 0 },
+            { q: 'Scalabilité signifie?', options: ['Capacité à croître sans proportionnalité des coûts', 'Capacité à vendre', 'Capacité à produire', 'Capacité à investir'], correct: 0 },
+            { q: 'Burn rate c\'est?', options: ['Taux de profit', 'Vitesse de consommation de trésorerie', 'Taux de croissance', 'Taux d\'inflation'], correct: 1 },
+            { q: 'Pivot en startup?', options: ['Croissance rapide', 'Changement stratégique majeur', 'Levée de fonds', 'Acquisition'], correct: 1 }
+          ]
+        }
       ]
     },
     creative: {
@@ -284,7 +359,42 @@ const LifeAscent = () => {
       icon: '🎨',
       hasExam: false,
       tuition: 4000,
-      careerPath: 'creative'
+      careerPath: 'creative',
+      progressExams: [
+        {
+          threshold: 250,
+          name: 'Revue Mi-Parcours',
+          questions: [
+            { q: 'RGB signifie?', options: ['Red Green Blue', 'Real Good Beauty', 'Random Graphics Base', 'Rich Graphic Background'], correct: 0 },
+            { q: 'Typographie sans-serif?', options: ['Avec empattements', 'Sans empattements', 'Manuscrite', 'Décorative'], correct: 1 },
+            { q: 'Règle des tiers en photo?', options: ['Diviser en 3 parties égales', 'Grille 3x3', 'Trois couleurs', 'Trois sujets'], correct: 1 },
+            { q: 'Qu\'est-ce que le kerning?', options: ['Espace entre lettres', 'Taille police', 'Couleur texte', 'Style police'], correct: 0 },
+            { q: 'CMYK pour?', options: ['Web', 'Impression', 'Vidéo', 'Animation'], correct: 1 }
+          ]
+        },
+        {
+          threshold: 500,
+          name: 'Revue Intermédiaire',
+          questions: [
+            { q: 'Nombre d\'or en design?', options: ['1.414', '1.618', '2.0', '3.14'], correct: 1 },
+            { q: 'Flat design c\'est?', options: ['Design 3D', 'Design minimaliste 2D', 'Design texturé', 'Design baroque'], correct: 1 },
+            { q: 'UI signifie?', options: ['User Interface', 'Unique Idea', 'Universal Image', 'Updated Item'], correct: 0 },
+            { q: 'Wireframe c\'est?', options: ['Maquette finale', 'Schéma de structure', 'Photo', 'Logo'], correct: 1 },
+            { q: 'DPI pour impression?', options: ['72', '150', '300', '600'], correct: 2 }
+          ]
+        },
+        {
+          threshold: 750,
+          name: 'Revue Pré-Finale',
+          questions: [
+            { q: 'Design thinking phase 1?', options: ['Prototyper', 'Empathie', 'Tester', 'Définir'], correct: 1 },
+            { q: 'Gestalt principles?', options: ['Principes de perception visuelle', 'Techniques de peinture', 'Styles typographiques', 'Formats d\'image'], correct: 0 },
+            { q: 'A/B testing c\'est?', options: ['Test de couleurs', 'Comparaison de deux versions', 'Test utilisateur', 'Test technique'], correct: 1 },
+            { q: 'Responsive design pour?', options: ['Répondre vite', 'Adapter à différents écrans', 'Design rapide', 'Design simple'], correct: 1 },
+            { q: 'Affordance en UX?', options: ['Prix du design', 'Capacité perçue d\'un objet', 'Vitesse de chargement', 'Qualité visuelle'], correct: 1 }
+          ]
+        }
+      ]
     },
     medical: {
       name: 'Faculté de Médecine',
@@ -317,6 +427,41 @@ const LifeAscent = () => {
           q: 'Plus grand organe du corps?',
           options: ['Le foie', 'Le cerveau', 'La peau', 'L\'estomac'],
           correct: 2
+        }
+      ],
+      progressExams: [
+        {
+          threshold: 250,
+          name: 'Examen Anatomie',
+          questions: [
+            { q: 'Combien de chambres dans le cœur?', options: ['2', '3', '4', '5'], correct: 2 },
+            { q: 'Artère principale du corps?', options: ['Artère pulmonaire', 'Aorte', 'Carotide', 'Fémorale'], correct: 1 },
+            { q: 'Fonction des poumons?', options: ['Filtrer le sang', 'Échanger O2/CO2', 'Digérer', 'Pomper le sang'], correct: 1 },
+            { q: 'Où se trouve le pancréas?', options: ['Thorax', 'Abdomen', 'Pelvis', 'Crâne'], correct: 1 },
+            { q: 'Plus petit os du corps?', options: ['Étrier (oreille)', 'Phalange', 'Rotule', 'Clavicule'], correct: 0 }
+          ]
+        },
+        {
+          threshold: 500,
+          name: 'Examen Physiologie',
+          questions: [
+            { q: 'pH sanguin normal?', options: ['6.4', '7.4', '8.4', '9.4'], correct: 1 },
+            { q: 'Rôle de l\'hémoglobine?', options: ['Coagulation', 'Transport O2', 'Immunité', 'Digestion'], correct: 1 },
+            { q: 'Fonction des reins?', options: ['Produire bile', 'Filtrer sang/déchets', 'Digérer', 'Respirer'], correct: 1 },
+            { q: 'Neurotransmetteur du bonheur?', options: ['Adrénaline', 'Dopamine', 'Cortisol', 'Insuline'], correct: 1 },
+            { q: 'Fréquence cardiaque normale (bpm)?', options: ['40-60', '60-100', '100-140', '140-180'], correct: 1 }
+          ]
+        },
+        {
+          threshold: 750,
+          name: 'Examen Pathologie',
+          questions: [
+            { q: 'Diabète type 1?', options: ['Résistance insuline', 'Manque production insuline', 'Excès insuline', 'Pas lié insuline'], correct: 1 },
+            { q: 'Signe d\'AVC?', options: ['Toux', 'Asymétrie faciale', 'Fièvre', 'Éternuement'], correct: 1 },
+            { q: 'Cancer le plus mortel?', options: ['Sein', 'Poumon', 'Prostate', 'Côlon'], correct: 1 },
+            { q: 'Hypertension artérielle?', options: ['< 120/80', '> 140/90', '< 90/60', '> 200/120'], correct: 1 },
+            { q: 'Anémie c\'est?', options: ['Excès globules rouges', 'Manque globules rouges', 'Excès globules blancs', 'Manque plaquettes'], correct: 1 }
+          ]
         }
       ]
     },
@@ -351,6 +496,41 @@ const LifeAscent = () => {
           q: 'Liquidité d\'un actif?',
           options: ['Sa valeur', 'Facilité conversion cash', 'Son risque', 'Son rendement'],
           correct: 1
+        }
+      ],
+      progressExams: [
+        {
+          threshold: 250,
+          name: 'Examen Marchés Financiers',
+          questions: [
+            { q: 'Bourse c\'est?', options: ['Marché de devises', 'Marché d\'actions', 'Marché immobilier', 'Marché de l\'or'], correct: 1 },
+            { q: 'Bull market?', options: ['Marché baissier', 'Marché haussier', 'Marché stable', 'Marché fermé'], correct: 1 },
+            { q: 'IPO signifie?', options: ['Initial Public Offering', 'International Price Order', 'Investment Profit Option', 'Index Price Organization'], correct: 0 },
+            { q: 'Dividende c\'est?', options: ['Part de profit distribuée', 'Frais de transaction', 'Impôt', 'Dette'], correct: 0 },
+            { q: 'ETF c\'est?', options: ['Fonds négocié en bourse', 'Action individuelle', 'Obligation', 'Devise'], correct: 0 }
+          ]
+        },
+        {
+          threshold: 500,
+          name: 'Examen Analyse Financière',
+          questions: [
+            { q: 'ROE mesure?', options: ['Rentabilité capitaux propres', 'Rentabilité actifs', 'Liquidité', 'Solvabilité'], correct: 0 },
+            { q: 'EBITDA c\'est?', options: ['Bénéfice avant intérêts/impôts/amortissement', 'Chiffre d\'affaires', 'Dette totale', 'Capital social'], correct: 0 },
+            { q: 'Ratio de solvabilité?', options: ['Actifs/Passifs', 'Dettes/Capitaux propres', 'Profit/CA', 'CA/Actifs'], correct: 1 },
+            { q: 'Free cash flow?', options: ['Cash disponible après investissements', 'Cash total', 'Cash des ventes', 'Cash emprunté'], correct: 0 },
+            { q: 'Working capital?', options: ['Actifs circulants - Passifs circulants', 'Total actifs', 'Total passifs', 'Capital social'], correct: 0 }
+          ]
+        },
+        {
+          threshold: 750,
+          name: 'Examen Produits Dérivés',
+          questions: [
+            { q: 'Option call?', options: ['Droit d\'acheter', 'Droit de vendre', 'Obligation d\'acheter', 'Obligation de vendre'], correct: 0 },
+            { q: 'Hedging c\'est?', options: ['Spéculer', 'Se couvrir contre risque', 'Maximiser profit', 'Éviter impôts'], correct: 1 },
+            { q: 'Future contract?', options: ['Contrat au comptant', 'Contrat à terme standardisé', 'Option', 'Swap'], correct: 1 },
+            { q: 'VaR (Value at Risk)?', options: ['Valeur actuelle', 'Perte potentielle maximale', 'Gain espéré', 'Prix moyen'], correct: 1 },
+            { q: 'Arbitrage c\'est?', options: ['Médiation', 'Profiter écarts de prix', 'Spéculation', 'Investissement long terme'], correct: 1 }
+          ]
         }
       ]
     }
@@ -427,6 +607,11 @@ const LifeAscent = () => {
   };
 
   const studyActivity = (intensity) => {
+    if (!gameState.canStudy) {
+      showNotification('❌ Vous devez passer l\'examen de progression avant de continuer!', 'error');
+      return;
+    }
+
     const intensities = {
       lazy: { 
         name: 'Étude Fainéante', 
@@ -468,6 +653,12 @@ const LifeAscent = () => {
     const newProgress = gameState.studyProgress + study.studyXp;
     const graduated = newProgress >= gameState.studyRequired;
     
+    // Vérifier si on atteint un seuil d'examen
+    const uni = universities[gameState.university];
+    const nextExam = uni.progressExams?.find(exam => 
+      newProgress >= exam.threshold && !gameState.examsPassed.includes(exam.threshold)
+    );
+    
     setGameState(prev => ({
       ...prev,
       time: prev.time + study.duration,
@@ -481,6 +672,17 @@ const LifeAscent = () => {
     
     if (graduated) {
       setTimeout(() => graduateFromUniversity(), 1000);
+    } else if (nextExam) {
+      setGameState(prev => ({ ...prev, canStudy: false }));
+      setTimeout(() => {
+        setProgressExamModal({
+          exam: nextExam,
+          university: gameState.university
+        });
+        setCurrentQuestion(0);
+        setExamAnswers([]);
+      }, 1000);
+      showNotification(`⚠️ Examen de progression requis: ${nextExam.name}!`, 'levelup');
     } else {
       showNotification(`${study.icon} ${study.name}! ${Math.round((newProgress/gameState.studyRequired)*100)}%`);
     }
@@ -491,6 +693,45 @@ const LifeAscent = () => {
         triggerRandomEvent();
       }
     }, 1000);
+  };
+
+  const answerProgressExam = (answerIndex) => {
+    const newAnswers = [...examAnswers, answerIndex];
+    setExamAnswers(newAnswers);
+    
+    if (currentQuestion < progressExamModal.exam.questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      const score = newAnswers.reduce((acc, answer, idx) => {
+        return acc + (answer === progressExamModal.exam.questions[idx].correct ? 1 : 0);
+      }, 0);
+      
+      const passed = score >= 3;
+      
+      if (passed) {
+        setGameState(prev => ({
+          ...prev,
+          examsPassed: [...prev.examsPassed, progressExamModal.exam.threshold],
+          canStudy: true,
+          examFailedToday: false
+        }));
+        createParticles();
+        showNotification(`✅ ${progressExamModal.exam.name} réussi! (${score}/5) Vous pouvez continuer vos études!`, 'levelup');
+      } else {
+        setGameState(prev => ({
+          ...prev,
+          canStudy: false,
+          examFailedToday: true,
+          energy: Math.max(0, prev.energy - 30),
+          studyProgress: Math.max(0, prev.studyProgress - 50)
+        }));
+        showNotification(`❌ Échec: ${score}/5. -30 énergie, -50 progression. Réessayez demain!`, 'error');
+      }
+      
+      setProgressExamModal(null);
+      setCurrentQuestion(0);
+      setExamAnswers([]);
+    }
   };
 
   const randomEvents = {
@@ -682,12 +923,280 @@ const LifeAscent = () => {
 
     showNotification(activity.successMessage);
     
-    // Déclencher un événement aléatoire après l'activité
-    setTimeout(() => {
-      if (Math.random() < 0.3) {
-        triggerRandomEvent();
+    // 20% chance de déclencher un mini-jeu après certaines activités
+    if (activity.miniGameChance && Math.random() < 0.2) {
+      setTimeout(() => {
+        startMiniGame(activity.miniGameType);
+      }, 1500);
+    } else {
+      // Déclencher un événement aléatoire après l'activité
+      setTimeout(() => {
+        if (Math.random() < 0.3) {
+          triggerRandomEvent();
+        }
+      }, 1000);
+    }
+  };
+
+  const startMiniGame = (type) => {
+    if (type === 'memory') {
+      // Jeu de mémoire pour Mental/Skills
+      const symbols = ['🎯', '⚡', '🌟', '💎', '🔥', '💫'];
+      const cards = [...symbols, ...symbols].sort(() => Math.random() - 0.5);
+      setMiniGameModal('memory');
+      setMiniGameState({
+        cards,
+        flipped: [],
+        matched: [],
+        attempts: 0,
+        maxAttempts: 15
+      });
+    } else if (type === 'reflex') {
+      // Jeu de réflexes pour Health
+      setMiniGameModal('reflex');
+      setMiniGameState({
+        score: 0,
+        timeLeft: 10,
+        targetPosition: { x: 50, y: 50 },
+        clicks: 0
+      });
+      
+      // Démarrer le timer
+      const interval = setInterval(() => {
+        setMiniGameState(prev => {
+          if (!prev || prev.timeLeft <= 0) {
+            clearInterval(interval);
+            return prev;
+          }
+          return { ...prev, timeLeft: prev.timeLeft - 0.1 };
+        });
+      }, 100);
+    } else if (type === 'pattern') {
+      // Jeu de pattern pour Skills/Mental
+      const sequence = Array.from({ length: 5 }, () => Math.floor(Math.random() * 4));
+      setMiniGameModal('pattern');
+      setMiniGameState({
+        sequence,
+        userSequence: [],
+        showSequence: true,
+        level: 1
+      });
+      
+      // Montrer la séquence
+      setTimeout(() => {
+        setMiniGameState(prev => ({ ...prev, showSequence: false }));
+      }, 3000);
+    } else if (type === 'typing') {
+      // Jeu de typing pour Career/Skills
+      const words = ['function', 'algorithm', 'database', 'interface', 'development', 'programming', 'software', 'application'];
+      const targetWord = words[Math.floor(Math.random() * words.length)];
+      setMiniGameModal('typing');
+      setMiniGameState({
+        targetWord,
+        currentInput: '',
+        timeLeft: 10,
+        wordsCompleted: 0
+      });
+      
+      const interval = setInterval(() => {
+        setMiniGameState(prev => {
+          if (!prev || prev.timeLeft <= 0) {
+            clearInterval(interval);
+            return prev;
+          }
+          return { ...prev, timeLeft: prev.timeLeft - 0.1 };
+        });
+      }, 100);
+    } else if (type === 'math') {
+      // Jeu de calcul mental pour Finance/Mental
+      const generateProblem = () => {
+        const a = Math.floor(Math.random() * 50) + 10;
+        const b = Math.floor(Math.random() * 50) + 10;
+        const ops = ['+', '-', '*'];
+        const op = ops[Math.floor(Math.random() * ops.length)];
+        let answer;
+        if (op === '+') answer = a + b;
+        else if (op === '-') answer = a - b;
+        else answer = a * b;
+        return { question: `${a} ${op} ${b}`, answer };
+      };
+      
+      setMiniGameModal('math');
+      setMiniGameState({
+        ...generateProblem(),
+        userAnswer: '',
+        score: 0,
+        timeLeft: 15
+      });
+      
+      const interval = setInterval(() => {
+        setMiniGameState(prev => {
+          if (!prev || prev.timeLeft <= 0) {
+            clearInterval(interval);
+            return prev;
+          }
+          return { ...prev, timeLeft: prev.timeLeft - 0.1 };
+        });
+      }, 100);
+    }
+  };
+
+  const handleMemoryClick = (index) => {
+    if (!miniGameState || miniGameState.flipped.length >= 2 || 
+        miniGameState.flipped.includes(index) || 
+        miniGameState.matched.includes(index)) return;
+    
+    const newFlipped = [...miniGameState.flipped, index];
+    setMiniGameState(prev => ({ ...prev, flipped: newFlipped }));
+    
+    if (newFlipped.length === 2) {
+      const [first, second] = newFlipped;
+      if (miniGameState.cards[first] === miniGameState.cards[second]) {
+        setTimeout(() => {
+          setMiniGameState(prev => ({
+            ...prev,
+            matched: [...prev.matched, first, second],
+            flipped: [],
+            attempts: prev.attempts + 1
+          }));
+          
+          if (miniGameState.matched.length + 2 === miniGameState.cards.length) {
+            endMiniGame(true);
+          }
+        }, 500);
+      } else {
+        setTimeout(() => {
+          setMiniGameState(prev => ({
+            ...prev,
+            flipped: [],
+            attempts: prev.attempts + 1
+          }));
+          
+          if (miniGameState.attempts + 1 >= miniGameState.maxAttempts) {
+            endMiniGame(false);
+          }
+        }, 1000);
       }
-    }, 1000);
+    }
+  };
+
+  const handleReflexClick = (e) => {
+    if (!miniGameState) return;
+    
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    
+    const distance = Math.sqrt(
+      Math.pow(x - miniGameState.targetPosition.x, 2) + 
+      Math.pow(y - miniGameState.targetPosition.y, 2)
+    );
+    
+    if (distance < 10) {
+      setMiniGameState(prev => ({
+        ...prev,
+        score: prev.score + 1,
+        clicks: prev.clicks + 1,
+        targetPosition: {
+          x: Math.random() * 80 + 10,
+          y: Math.random() * 80 + 10
+        }
+      }));
+    } else {
+      setMiniGameState(prev => ({ ...prev, clicks: prev.clicks + 1 }));
+    }
+    
+    if (miniGameState.timeLeft <= 0) {
+      endMiniGame(miniGameState.score >= 5);
+    }
+  };
+
+  const handlePatternClick = (num) => {
+    if (!miniGameState || miniGameState.showSequence) return;
+    
+    const newUserSequence = [...miniGameState.userSequence, num];
+    setMiniGameState(prev => ({ ...prev, userSequence: newUserSequence }));
+    
+    if (newUserSequence.length === miniGameState.sequence.length) {
+      const correct = newUserSequence.every((n, i) => n === miniGameState.sequence[i]);
+      setTimeout(() => endMiniGame(correct), 500);
+    }
+  };
+
+  const handleTypingInput = (e) => {
+    const value = e.target.value;
+    setMiniGameState(prev => ({ ...prev, currentInput: value }));
+    
+    if (value === miniGameState.targetWord) {
+      const words = ['function', 'algorithm', 'database', 'interface', 'development', 'programming', 'software', 'application'];
+      const newWord = words[Math.floor(Math.random() * words.length)];
+      setMiniGameState(prev => ({
+        ...prev,
+        targetWord: newWord,
+        currentInput: '',
+        wordsCompleted: prev.wordsCompleted + 1
+      }));
+    }
+    
+    if (miniGameState.timeLeft <= 0) {
+      endMiniGame(miniGameState.wordsCompleted >= 3);
+    }
+  };
+
+  const handleMathSubmit = () => {
+    if (!miniGameState) return;
+    
+    const correct = parseInt(miniGameState.userAnswer) === miniGameState.answer;
+    
+    if (correct) {
+      const generateProblem = () => {
+        const a = Math.floor(Math.random() * 50) + 10;
+        const b = Math.floor(Math.random() * 50) + 10;
+        const ops = ['+', '-', '*'];
+        const op = ops[Math.floor(Math.random() * ops.length)];
+        let answer;
+        if (op === '+') answer = a + b;
+        else if (op === '-') answer = a - b;
+        else answer = a * b;
+        return { question: `${a} ${op} ${b}`, answer };
+      };
+      
+      const newProblem = generateProblem();
+      setMiniGameState(prev => ({
+        ...prev,
+        ...newProblem,
+        userAnswer: '',
+        score: prev.score + 1
+      }));
+    }
+    
+    if (miniGameState.timeLeft <= 0) {
+      endMiniGame(miniGameState.score >= 5);
+    }
+  };
+
+  const endMiniGame = (won) => {
+    if (won) {
+      const bonuses = {
+        memory: { xp: { mental: 50, skills: 30 }, money: 100 },
+        reflex: { xp: { health: 50, mental: 20 }, money: 80 },
+        pattern: { xp: { skills: 50, mental: 40 }, money: 100 },
+        typing: { xp: { career: 50, skills: 40 }, money: 120 },
+        math: { xp: { finance: 50, mental: 40 }, money: 150 }
+      };
+      
+      const bonus = bonuses[miniGameModal];
+      Object.entries(bonus.xp).forEach(([stat, xp]) => addXP(stat, xp));
+      setGameState(prev => ({ ...prev, money: prev.money + bonus.money }));
+      
+      createParticles();
+      showNotification(`🎮 Mini-jeu réussi! +${bonus.money}€ et bonus XP!`, 'levelup');
+    } else {
+      showNotification('🎮 Mini-jeu échoué. Réessayez plus tard!', 'error');
+    }
+    
+    setMiniGameModal(null);
+    setMiniGameState(null);
   };
 
   const sleep = () => {
@@ -720,7 +1229,9 @@ const LifeAscent = () => {
       xpGain: { health: 30, mental: 10 },
       questType: 'health',
       successMessage: '💪 Excellente course!',
-      gradient: 'from-red-500 to-pink-500'
+      gradient: 'from-red-500 to-pink-500',
+      miniGameChance: true,
+      miniGameType: 'reflex'
     },
     {
       name: 'Musculation',
@@ -730,7 +1241,9 @@ const LifeAscent = () => {
       xpGain: { health: 50 },
       questType: 'health',
       successMessage: '🏋️ Plus fort!',
-      gradient: 'from-orange-500 to-red-500'
+      gradient: 'from-orange-500 to-red-500',
+      miniGameChance: true,
+      miniGameType: 'reflex'
     },
     {
       name: 'Travail Freelance',
@@ -742,7 +1255,9 @@ const LifeAscent = () => {
       questType: 'career',
       successMessage: '📚 Session productive!',
       gradient: 'from-blue-500 to-cyan-500',
-      hideWhenUniversity: true
+      hideWhenUniversity: true,
+      miniGameChance: true,
+      miniGameType: 'typing'
     },
     {
       name: 'Projet Personnel',
@@ -752,7 +1267,9 @@ const LifeAscent = () => {
       xpGain: { career: 40, skills: 40 },
       questType: 'career',
       successMessage: '🎯 Excellent progrès!',
-      gradient: 'from-purple-500 to-blue-500'
+      gradient: 'from-purple-500 to-blue-500',
+      miniGameChance: true,
+      miniGameType: 'pattern'
     },
     {
       name: 'Sortie Amis',
@@ -762,7 +1279,9 @@ const LifeAscent = () => {
       xpGain: { social: 60, mental: 20 },
       questType: 'social',
       successMessage: '🎉 Moment mémorable!',
-      gradient: 'from-green-500 to-teal-500'
+      gradient: 'from-green-500 to-teal-500',
+      miniGameChance: true,
+      miniGameType: 'memory'
     },
     {
       name: 'Méditation',
@@ -771,7 +1290,9 @@ const LifeAscent = () => {
       energyCost: 10,
       xpGain: { mental: 40, health: 10 },
       successMessage: '🧘 Esprit apaisé!',
-      gradient: 'from-purple-500 to-pink-500'
+      gradient: 'from-purple-500 to-pink-500',
+      miniGameChance: true,
+      miniGameType: 'memory'
     },
     {
       name: 'Side Hustle',
@@ -781,7 +1302,9 @@ const LifeAscent = () => {
       xpGain: { finance: 50, skills: 30 },
       moneyGain: 150,
       successMessage: '💰 Argent gagné!',
-      gradient: 'from-yellow-500 to-green-500'
+      gradient: 'from-yellow-500 to-green-500',
+      miniGameChance: true,
+      miniGameType: 'math'
     },
     {
       name: 'Investir',
@@ -790,7 +1313,9 @@ const LifeAscent = () => {
       energyCost: 15,
       xpGain: { finance: 40 },
       successMessage: '📈 Investissement fait!',
-      gradient: 'from-emerald-500 to-cyan-500'
+      gradient: 'from-emerald-500 to-cyan-500',
+      miniGameChance: true,
+      miniGameType: 'math'
     }
   ];
 
@@ -819,7 +1344,7 @@ const LifeAscent = () => {
   if (screen === 'intro') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-        <div className="w-full">
+        <div className="max-w-md w-full">
           <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-3xl p-8 border border-slate-700/50 shadow-2xl">
             <div className="text-center mb-8">
               <div className="inline-block p-4 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-2xl mb-4">
@@ -859,10 +1384,189 @@ const LifeAscent = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
+      {/* Mini-Game Modals */}
+      {miniGameModal === 'memory' && miniGameState && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="max-w-2xl w-full bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-xl rounded-3xl p-8 border-2 border-purple-500/50">
+            <h3 className="text-2xl font-bold text-white mb-4 text-center">🧠 Jeu de Mémoire</h3>
+            <p className="text-slate-300 text-center mb-4">Trouvez les paires! Tentatives: {miniGameState.attempts}/{miniGameState.maxAttempts}</p>
+            <div className="grid grid-cols-4 gap-4 mb-4">
+              {miniGameState.cards.map((symbol, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleMemoryClick(idx)}
+                  className={`aspect-square text-4xl rounded-xl transition-all ${
+                    miniGameState.flipped.includes(idx) || miniGameState.matched.includes(idx)
+                      ? 'bg-purple-500 rotate-0'
+                      : 'bg-slate-700 rotate-180'
+                  }`}
+                >
+                  {(miniGameState.flipped.includes(idx) || miniGameState.matched.includes(idx)) && symbol}
+                </button>
+              ))}
+            </div>
+            <button onClick={() => endMiniGame(false)} className="w-full py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl">
+              Abandonner
+            </button>
+          </div>
+        </div>
+      )}
+
+      {miniGameModal === 'reflex' && miniGameState && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="max-w-2xl w-full bg-gradient-to-br from-red-500/20 to-orange-500/20 backdrop-blur-xl rounded-3xl p-8 border-2 border-red-500/50">
+            <h3 className="text-2xl font-bold text-white mb-2 text-center">⚡ Test de Réflexes</h3>
+            <p className="text-slate-300 text-center mb-4">Score: {miniGameState.score} | Temps: {miniGameState.timeLeft.toFixed(1)}s</p>
+            <div 
+              onClick={handleReflexClick}
+              className="relative w-full h-96 bg-slate-800 rounded-xl cursor-crosshair overflow-hidden"
+            >
+              <div 
+                className="absolute w-12 h-12 bg-red-500 rounded-full transition-all duration-200"
+                style={{ 
+                  left: `${miniGameState.targetPosition.x}%`, 
+                  top: `${miniGameState.targetPosition.y}%`,
+                  transform: 'translate(-50%, -50%)'
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {miniGameModal === 'pattern' && miniGameState && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="max-w-2xl w-full bg-gradient-to-br from-blue-500/20 to-cyan-500/20 backdrop-blur-xl rounded-3xl p-8 border-2 border-blue-500/50">
+            <h3 className="text-2xl font-bold text-white mb-2 text-center">🎯 Mémorisez le Pattern</h3>
+            {miniGameState.showSequence ? (
+              <div>
+                <p className="text-slate-300 text-center mb-4">Mémorisez la séquence!</p>
+                <div className="flex justify-center gap-4 mb-8">
+                  {miniGameState.sequence.map((num, idx) => (
+                    <div key={idx} className="w-16 h-16 bg-cyan-500 rounded-xl flex items-center justify-center text-2xl font-bold text-white">
+                      {num}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div>
+                <p className="text-slate-300 text-center mb-4">Reproduisez la séquence!</p>
+                <div className="flex justify-center gap-4 mb-4">
+                  {miniGameState.userSequence.map((num, idx) => (
+                    <div key={idx} className="w-16 h-16 bg-blue-500 rounded-xl flex items-center justify-center text-2xl font-bold text-white">
+                      {num}
+                    </div>
+                  ))}
+                </div>
+                <div className="grid grid-cols-4 gap-4">
+                  {[0, 1, 2, 3].map(num => (
+                    <button
+                      key={num}
+                      onClick={() => handlePatternClick(num)}
+                      className="aspect-square bg-slate-700 hover:bg-blue-600 rounded-xl text-2xl font-bold text-white transition-all"
+                    >
+                      {num}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {miniGameModal === 'typing' && miniGameState && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="max-w-2xl w-full bg-gradient-to-br from-green-500/20 to-emerald-500/20 backdrop-blur-xl rounded-3xl p-8 border-2 border-green-500/50">
+            <h3 className="text-2xl font-bold text-white mb-2 text-center">⌨️ Test de Frappe</h3>
+            <p className="text-slate-300 text-center mb-4">Mots: {miniGameState.wordsCompleted} | Temps: {miniGameState.timeLeft.toFixed(1)}s</p>
+            <div className="mb-4 p-6 bg-slate-800 rounded-xl text-center">
+              <p className="text-3xl font-bold text-white mb-4">{miniGameState.targetWord}</p>
+              <input
+                type="text"
+                value={miniGameState.currentInput}
+                onChange={handleTypingInput}
+                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white text-center text-xl focus:outline-none focus:border-green-500"
+                autoFocus
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {miniGameModal === 'math' && miniGameState && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="max-w-2xl w-full bg-gradient-to-br from-yellow-500/20 to-orange-500/20 backdrop-blur-xl rounded-3xl p-8 border-2 border-yellow-500/50">
+            <h3 className="text-2xl font-bold text-white mb-2 text-center">🧮 Calcul Mental</h3>
+            <p className="text-slate-300 text-center mb-4">Score: {miniGameState.score} | Temps: {miniGameState.timeLeft.toFixed(1)}s</p>
+            <div className="mb-4 p-6 bg-slate-800 rounded-xl text-center">
+              <p className="text-4xl font-bold text-white mb-4">{miniGameState.question} = ?</p>
+              <div className="flex gap-2">
+                <input
+                  type="number"
+                  value={miniGameState.userAnswer}
+                  onChange={(e) => setMiniGameState(prev => ({ ...prev, userAnswer: e.target.value }))}
+                  className="flex-1 px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white text-center text-xl focus:outline-none focus:border-yellow-500"
+                  autoFocus
+                />
+                <button 
+                  onClick={handleMathSubmit}
+                  className="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white font-bold rounded-xl"
+                >
+                  ✓
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Progress Exam Modal */}
+      {progressExamModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="max-w-2xl w-full bg-gradient-to-br from-orange-500/20 to-red-500/20 backdrop-blur-xl rounded-3xl p-8 border-2 border-orange-500/50 shadow-2xl">
+            <div className="text-center mb-6">
+              <div className="inline-block p-4 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl mb-4">
+                <Trophy className="w-12 h-12 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">{progressExamModal.exam.name}</h3>
+              <p className="text-slate-300">{universities[progressExamModal.university].name}</p>
+              <div className="text-sm text-orange-300 mt-2">⚠️ Vous devez réussir (3/5) pour continuer vos études!</div>
+              <div className="text-sm text-slate-400 mt-1">Question {currentQuestion + 1} / {progressExamModal.exam.questions.length}</div>
+            </div>
+
+            <div className="bg-slate-800/50 rounded-xl p-6 mb-6">
+              <h4 className="text-lg font-semibold text-white mb-4">
+                {progressExamModal.exam.questions[currentQuestion].q}
+              </h4>
+              <div className="space-y-3">
+                {progressExamModal.exam.questions[currentQuestion].options.map((option, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => answerProgressExam(idx)}
+                    className="w-full p-4 bg-slate-700/50 hover:bg-orange-600 rounded-xl text-left text-white transition-all border border-slate-600 hover:border-orange-500"
+                  >
+                    {String.fromCharCode(65 + idx)}. {option}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-orange-500 to-red-500 transition-all duration-300"
+                style={{ width: `${((currentQuestion + 1) / progressExamModal.exam.questions.length) * 100}%` }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Exam Modal */}
       {examModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full w-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 backdrop-blur-xl rounded-3xl p-8 border-2 border-indigo-500/50 shadow-2xl">
+          <div className="max-w-2xl w-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 backdrop-blur-xl rounded-3xl p-8 border-2 border-indigo-500/50 shadow-2xl">
             <div className="text-center mb-6">
               <div className="inline-block p-4 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl mb-4">
                 <Award className="w-12 h-12 text-white" />
@@ -902,7 +1606,7 @@ const LifeAscent = () => {
       {/* Career Event Modal */}
       {careerEvent && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className={`w-full w-full bg-gradient-to-br ${
+          <div className={`max-w-md w-full bg-gradient-to-br ${
             careerEvent.type === 'promotion' 
               ? 'from-yellow-500/20 to-orange-500/20 border-yellow-500/50' 
               : careerEvent.effects?.money && careerEvent.effects.money > 0
@@ -996,7 +1700,7 @@ const LifeAscent = () => {
       {/* Event Modal */}
       {event && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className={`w-full w-full bg-gradient-to-br ${
+          <div className={`max-w-md w-full bg-gradient-to-br ${
             event.type === 'good' 
               ? 'from-emerald-500/20 to-cyan-500/20 border-emerald-500/50' 
               : 'from-red-500/20 to-orange-500/20 border-red-500/50'
@@ -1077,7 +1781,7 @@ const LifeAscent = () => {
       )}
 
       {/* Header */}
-      <div className="w-full mx-auto mb-6">
+      <div className="max-w-7xl mx-auto mb-6">
         <div className="bg-gradient-to-r from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50 shadow-xl">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
@@ -1126,7 +1830,7 @@ const LifeAscent = () => {
       </div>
 
       {/* Main Content */}
-      <div className="w-full mx-auto grid grid-cols-1 lg:grid-cols-5 gap-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Left Panel - Stats & Quests (40%) */}
         <div className="lg:col-span-2 space-y-6">
           {/* Stats Panel */}
@@ -1157,11 +1861,20 @@ const LifeAscent = () => {
                     {Math.round((gameState.studyProgress / gameState.studyRequired) * 100)}%
                   </span>
                 </div>
-                <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+                <div className="h-2 bg-slate-700 rounded-full overflow-hidden mb-2">
                   <div 
                     className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-500"
                     style={{ width: `${(gameState.studyProgress / gameState.studyRequired) * 100}%` }}
                   />
+                </div>
+                {!gameState.canStudy && (
+                  <div className="text-xs text-orange-400 mt-2 flex items-center gap-1">
+                    <Award className="w-3 h-3" />
+                    Examen de progression requis!
+                  </div>
+                )}
+                <div className="text-xs text-slate-400 mt-1">
+                  Examens réussis: {gameState.examsPassed.length}/3
                 </div>
               </div>
             )}
@@ -1239,9 +1952,9 @@ const LifeAscent = () => {
                 <div className="grid grid-cols-1 gap-3">
                   <button
                     onClick={() => studyActivity('lazy')}
-                    disabled={gameState.energy < 15 || gameState.time + 2 > 24}
+                    disabled={gameState.energy < 15 || gameState.time + 2 > 24 || !gameState.canStudy}
                     className={`p-4 rounded-xl border transition-all text-left ${
-                      gameState.energy < 15 || gameState.time + 2 > 24
+                      gameState.energy < 15 || gameState.time + 2 > 24 || !gameState.canStudy
                         ? 'bg-slate-800/30 border-slate-700/30 opacity-50'
                         : 'bg-gradient-to-r from-slate-600 to-slate-700 border-slate-600 hover:scale-102'
                     }`}
@@ -1250,6 +1963,7 @@ const LifeAscent = () => {
                       <div>
                         <div className="font-semibold text-white flex items-center gap-2">
                           😴 Étude Fainéante
+                          {!gameState.canStudy && <span className="text-xs text-orange-400">(Examen requis)</span>}
                         </div>
                         <div className="text-xs text-slate-400 mt-1">
                           2h · -15 énergie · +30 XP étude
@@ -1260,9 +1974,9 @@ const LifeAscent = () => {
 
                   <button
                     onClick={() => studyActivity('normal')}
-                    disabled={gameState.energy < 25 || gameState.time + 3 > 24}
+                    disabled={gameState.energy < 25 || gameState.time + 3 > 24 || !gameState.canStudy}
                     className={`p-4 rounded-xl border transition-all text-left ${
-                      gameState.energy < 25 || gameState.time + 3 > 24
+                      gameState.energy < 25 || gameState.time + 3 > 24 || !gameState.canStudy
                         ? 'bg-slate-800/30 border-slate-700/30 opacity-50'
                         : 'bg-gradient-to-r from-blue-600 to-cyan-600 border-blue-600 hover:scale-102'
                     }`}
@@ -1271,6 +1985,7 @@ const LifeAscent = () => {
                       <div>
                         <div className="font-semibold text-white flex items-center gap-2">
                           📚 Étude Normale
+                          {!gameState.canStudy && <span className="text-xs text-orange-400">(Examen requis)</span>}
                         </div>
                         <div className="text-xs text-slate-200 mt-1">
                           3h · -25 énergie · +60 XP étude
@@ -1281,9 +1996,9 @@ const LifeAscent = () => {
 
                   <button
                     onClick={() => studyActivity('diligent')}
-                    disabled={gameState.energy < 40 || gameState.time + 4 > 24}
+                    disabled={gameState.energy < 40 || gameState.time + 4 > 24 || !gameState.canStudy}
                     className={`p-4 rounded-xl border transition-all text-left ${
-                      gameState.energy < 40 || gameState.time + 4 > 24
+                      gameState.energy < 40 || gameState.time + 4 > 24 || !gameState.canStudy
                         ? 'bg-slate-800/30 border-slate-700/30 opacity-50'
                         : 'bg-gradient-to-r from-orange-600 to-red-600 border-orange-600 hover:scale-102'
                     }`}
@@ -1292,6 +2007,7 @@ const LifeAscent = () => {
                       <div>
                         <div className="font-semibold text-white flex items-center gap-2">
                           🔥 Étude Assidue
+                          {!gameState.canStudy && <span className="text-xs text-orange-400">(Examen requis)</span>}
                         </div>
                         <div className="text-xs text-slate-200 mt-1">
                           4h · -40 énergie · +100 XP étude
